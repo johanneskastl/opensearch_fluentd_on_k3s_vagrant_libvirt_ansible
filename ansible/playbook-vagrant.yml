@@ -17,3 +17,6 @@
 
 - name: 'Run playbook-opensearch_installation.yml'
   ansible.builtin.import_playbook: playbook-opensearch_installation.yml
+
+- name: 'Run playbook-fluentd_installation.yml'
+  ansible.builtin.import_playbook: playbook-fluentd_installation.yml
