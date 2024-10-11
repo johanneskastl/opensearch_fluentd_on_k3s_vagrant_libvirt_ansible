@@ -22,6 +22,19 @@
         kind: 'Namespace'
         state: 'present'
 
+    - name: 'Create the secret for the OpenSearch admin password'
+      delegate_to: 'localhost'
+      kubernetes.core.k8s:
+        state: 'present'
+        definition:
+          metadata:
+            name: opensearch-admin-password
+            namespace: kube-logging
+          kind: Secret
+          api_version: 'v1'
+          stringData:
+            OPENSEARCH_INITIAL_ADMIN_PASSWORD: 'totallynotsecurE1@'
+
     - name: 'Install OpenSearch via the helm chart'
       delegate_to: 'localhost'
       kubernetes.core.helm:
@@ -32,9 +45,9 @@
         release_values:
           singleNode: true
           protocol: http
-          extraEnvs:
-            - name: OPENSEARCH_INITIAL_ADMIN_PASSWORD
-              value: 'totallynotsecurE1@'
+          envFrom:
+            - secretRef:
+                name: opensearch-admin-password
 
     - name: 'Install OpenSearch Dashboards via the helm chart'
       delegate_to: 'localhost'
