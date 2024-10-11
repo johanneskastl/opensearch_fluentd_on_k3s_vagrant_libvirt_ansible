@@ -44,7 +44,6 @@
         release_namespace: 'kube-logging'
         release_values:
           singleNode: true
-          protocol: http
           envFrom:
             - secretRef:
                 name: opensearch-admin-password
